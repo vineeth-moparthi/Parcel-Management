@@ -36,4 +36,9 @@ public class UserService {
     public List<User> getUserDetails() {
         return userRepo.findAll();
     }
+
+    public User getUserDetailsById(long userId) {
+        User user=userRepo.findById(userId).orElse(null);
+        return user;
+    }
 }

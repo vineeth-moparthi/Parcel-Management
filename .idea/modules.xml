@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ParcelMangementSpringBoot/ParcelMangementSpringBoot.iml" filepath="$PROJECT_DIR$/ParcelMangementSpringBoot/ParcelMangementSpringBoot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ParcelManagement.iml" filepath="$PROJECT_DIR$/.idea/ParcelManagement.iml" />
     </modules>
   </component>
 </project>

@@ -2,15 +2,15 @@ package com.telsusko.ParcelMangementSpringBoot.Controller;
 
 import com.telsusko.ParcelMangementSpringBoot.Model.User;
 import com.telsusko.ParcelMangementSpringBoot.Service.UserService;
+import com.telsusko.ParcelMangementSpringBoot.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequestMapping("/api")
 public class UserController {
     @Autowired
     UserService userService;
@@ -29,5 +29,11 @@ public class UserController {
     List<User> getUserDetails()
     {
         return userService.getUserDetails();
+    }
+
+    @PostMapping("/login")
+    User loginUser(@RequestBody LoginRequest loginRequest){
+        return userService.validateUser(loginRequest.getEmail(),loginRequest.getPassword());
+
     }
 }

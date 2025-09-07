@@ -5,14 +5,12 @@ import com.telsusko.ParcelMangementSpringBoot.Model.User;
 import com.telsusko.ParcelMangementSpringBoot.Service.BookingService;
 import com.telsusko.ParcelMangementSpringBoot.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/TrackingStatus")
 public class TrackingController {
     @Autowired
@@ -22,16 +20,14 @@ public class TrackingController {
     UserService userService;
 
     @GetMapping("/{bookingId}")
-    public Map<Booking,User> getTrackingStatus(@PathVariable long bookingId)
+    public Booking getTrackingStatus(@PathVariable long bookingId)
     {
-        Map<Booking,User> map=new HashMap<>();
         Booking booking=bookingService.getBookingDetailsByID(bookingId);
+
         if(booking==null) {
             return null;
         }
 
-        User user=userService.getUserDetailsById(booking.getUserId());
-        map.put(booking,user);
-        return map;
+        return booking;
     }
 }

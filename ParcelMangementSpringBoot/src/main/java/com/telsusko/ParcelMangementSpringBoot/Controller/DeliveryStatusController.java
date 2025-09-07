@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.awt.print.Book;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/DeliveryStatus")
 public class DeliveryStatusController {
 

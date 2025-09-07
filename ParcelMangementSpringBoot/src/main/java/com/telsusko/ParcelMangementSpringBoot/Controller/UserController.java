@@ -37,7 +37,6 @@ public class UserController {
     @PostMapping("/login")
     User loginUser(@RequestBody LoginRequest loginRequest){
         return userService.validateUser(loginRequest.getEmail(),loginRequest.getPassword());
-
     }
     @PostMapping("/registration")
     public String registerUser(@RequestBody RegisterationRequest dto) {
@@ -45,9 +44,9 @@ public class UserController {
             return "Password and confirm password do not match";
         }
 
-        if (dto.getUserId() == null || userRepo.findByUsername(dto.getUserId()) != null) {
-            return "User ID already taken or missing";
-        }
+//        if (dto.getUserId() == null || userRepo.findByUsername(dto.getUserId()) != null) {
+//            return "User ID already taken or missing";
+//        }
 
         User user = new User();
         user.setName(dto.getName());
@@ -55,7 +54,7 @@ public class UserController {
         user.setCountryCode(dto.getCountryCode());
         user.setMobile(dto.getMobile());
         user.setAddress(dto.getAddress());
-        user.setUsername(dto.getUserId());
+        //user.setUsername(dto.getUserId());
         user.setPassword(dto.getPassword());
 
         userService.registerUser(user);

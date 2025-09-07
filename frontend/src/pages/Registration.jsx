@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { registerUser } from "../api/authApi";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Registration() {
   const [formData, setFormData] = useState({
@@ -8,19 +9,20 @@ export default function Registration() {
     countryCode: "+91",
     mobile: "",
     address: "",
-    userId: "",
     password: "",
-    confirmPassword: "",    
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const countryCodes = ["+91", "+1", "+44", "+61", "+81"];
 
   const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({ ...prev, [name]: value }));
-};
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const validate = () => {
     const newErrors = {};
@@ -31,12 +33,6 @@ export default function Registration() {
     if (!/^\d{10}$/.test(formData.mobile))
       newErrors.mobile = "Mobile number must be 10 digits";
     if (!formData.address) newErrors.address = "Address is required";
-    if (
-      !formData.userId ||
-      formData.userId.length < 5 ||
-      formData.userId.length > 20
-    )
-      newErrors.userId = "User ID must be 5–20 characters";
     if (!formData.password || formData.password.length > 30)
       newErrors.password = "Password is required (max 30 characters)";
     if (formData.password !== formData.confirmPassword)
@@ -49,12 +45,21 @@ export default function Registration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    // console.log("Form Submitted:", formData);
-     try {
-        const response = await registerUser(formData);
-        console.log("Success:", response.data);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/registration",
+        formData
+      );
+      setMessage(response.data);
+
+      if (response.data === "User registered successfully") {
+        alert("Registration successful! Please login.");
+        navigate("/login");
+      }
     } catch (error) {
-        console.error("Registration failed:", error);
+      console.error("Registration failed:", error);
+      setMessage("Something went wrong. Please try again.");
     }
   };
 
@@ -129,22 +134,9 @@ export default function Registration() {
             onChange={handleChange}
             className="form-control"
           ></textarea>
-          {errors.address && <div className="text-danger">{errors.address}</div>}
-        </div>
-
-        {/* User ID */}
-        <div className="mb-3">
-          <label className="form-label">User ID</label>
-          <input
-            type="text"
-            name="userId"
-            minLength={5}
-            maxLength={20}
-            value={formData.userId}
-            onChange={handleChange}
-            className="form-control"
-          />
-          {errors.userId && <div className="text-danger">{errors.userId}</div>}
+          {errors.address && (
+            <div className="text-danger">{errors.address}</div>
+          )}
         </div>
 
         {/* Password */}
@@ -178,11 +170,14 @@ export default function Registration() {
             <div className="text-danger">{errors.confirmPassword}</div>
           )}
         </div>
+
         {/* Submit */}
         <button type="submit" className="btn btn-primary">
           Register
         </button>
       </form>
+
+      {message && <p className="mt-3">{message}</p>}
     </div>
   );
 }

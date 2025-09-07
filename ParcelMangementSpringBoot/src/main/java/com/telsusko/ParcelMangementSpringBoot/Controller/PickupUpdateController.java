@@ -3,10 +3,7 @@ package com.telsusko.ParcelMangementSpringBoot.Controller;
 import com.telsusko.ParcelMangementSpringBoot.Model.Booking;
 import com.telsusko.ParcelMangementSpringBoot.Service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
 import java.sql.Timestamp;
@@ -14,6 +11,7 @@ import java.time.OffsetDateTime;
 
 @RestController
 @RequestMapping("/PickupDropUpdate")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PickupUpdateController {
 
     @Autowired

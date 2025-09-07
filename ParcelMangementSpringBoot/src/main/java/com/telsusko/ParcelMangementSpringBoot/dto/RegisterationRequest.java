@@ -11,7 +11,7 @@ public class RegisterationRequest {
     private String countryCode;
     private String mobile;
     private String address;
-    private String userId;
+//    private String userId;
     private String password;
     private String confirmPassword;
 }

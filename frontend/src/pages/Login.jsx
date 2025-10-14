@@ -1,16 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { loginUser } from "../api/authApi";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState(""); // ✅ new state
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.successMsg) {
+      setSuccessMsg(location.state.successMsg);
+    }
+  }, [location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccessMsg(""); // Clear previous success on new attempt
 
     try {
       const response = await loginUser({ email, password });
@@ -20,7 +29,6 @@ export default function Login() {
       } else {
         // Save full user object in localStorage
         localStorage.setItem("user", JSON.stringify(response.data));
-
         navigate("/dashboard");
       }
     } catch (err) {
@@ -57,7 +65,13 @@ export default function Login() {
             style={{ width: "100%", padding: "0.5rem" }}
           />
         </div>
+
+        {/* ✅ Display success message in green */}
+        {successMsg && <p style={{ color: "green" }}>{successMsg}</p>}
+
+        {/* Display error */}
         {error && <p style={{ color: "red" }}>{error}</p>}
+
         <button
           type="submit"
           style={{ padding: "0.5rem 1rem", marginRight: "1rem" }}
@@ -66,7 +80,7 @@ export default function Login() {
         </button>
         <button
           type="button"
-          onClick={() => navigate("/registration")}
+          onClick={() => navigate("/user-registration")}
           style={{
             padding: "0.5rem 1rem",
             backgroundColor: "#007bff",

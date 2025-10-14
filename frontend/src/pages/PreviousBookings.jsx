@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PreviousBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  // ✅ Parse user object from localStorage safely
+  // Parse user object from localStorage safely
   const [user] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -24,20 +26,28 @@ const PreviousBookings = () => {
       .then((res) => {
         setBookings(res.data);
         setLoading(false);
-        // console.log(bookings);
       })
       .catch((err) => {
         console.error("Error fetching bookings:", err);
         setError("Failed to fetch bookings.");
         setLoading(false);
       });
-  }, [user?.userId]); // ✅ Runs only when userId changes
+  }, [user?.userId]);
 
   if (loading) return <p className="text-center mt-5">Loading bookings...</p>;
   if (error) return <p className="text-danger mt-5 text-center">{error}</p>;
 
+  const handleBack = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="container mt-5">
+      <div className="d-flex justify-content-start mb-3">
+        <button className="btn btn-danger" onClick={handleBack}>
+          Back
+        </button>
+      </div>
       <h3>Previous Bookings</h3>
       <ul className="list-group mt-3">
         {bookings.length === 0 ? (
@@ -45,7 +55,9 @@ const PreviousBookings = () => {
         ) : (
           bookings.map((b) => (
             <li key={b.bookingId} className="list-group-item">
-              <strong>{b.description}</strong> - {b.status}
+              <strong>Booking ID:</strong> {b.bookingId} <br />
+              <strong>Description:</strong> {b.description} <br />
+              <strong>Status:</strong> {b.status}
             </li>
           ))
         )}

@@ -16,7 +16,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookingId;
 
-    private long parcelId,userId;
+    private long userId;
     private String senderEmail,senderName, senderMobile, senderAddress, senderPincode,recName, recEmail, recMobile, recAddress, recPincode;
 
     private Timestamp bookingDate;

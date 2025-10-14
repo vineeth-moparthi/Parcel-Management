@@ -25,7 +25,7 @@ public class User {
 
     private String pincode;
 
-    private String username;
-
     private String password;
+
+    private String role;
 }

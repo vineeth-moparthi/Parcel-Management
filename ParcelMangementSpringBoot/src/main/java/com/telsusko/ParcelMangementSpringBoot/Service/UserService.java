@@ -19,6 +19,7 @@ public class UserService {
         {
             return false;
         }
+        user.setRole("USER");
         userRepo.save(user);
 
         return true;
@@ -40,5 +41,20 @@ public class UserService {
     public User getUserDetailsById(long userId) {
         User user=userRepo.findById(userId).orElse(null);
         return user;
+    }
+
+    public boolean registerAdmin(User admin) {
+        if(userRepo.findByEmail(admin.getEmail())!=null)
+        {
+            return false;
+        }
+        admin.setRole("ADMIN");
+        userRepo.save(admin);
+
+        return true;
+    }
+
+    public void deleteById(long userId) {
+        userRepo.deleteById(userId);
     }
 }

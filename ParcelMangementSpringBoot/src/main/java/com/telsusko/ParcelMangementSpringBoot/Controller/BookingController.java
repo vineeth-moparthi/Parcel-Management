@@ -1,12 +1,10 @@
 package com.telsusko.ParcelMangementSpringBoot.Controller;
 
 import com.telsusko.ParcelMangementSpringBoot.Model.Booking;
-import com.telsusko.ParcelMangementSpringBoot.Model.User;
 import com.telsusko.ParcelMangementSpringBoot.Service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -20,7 +18,7 @@ public class BookingController {
     {
         bookingService.addBookingDetails(booking);
     }
-    @GetMapping("/booking")
+    @GetMapping("/allbookings")
     List<Booking> getBookingDetails()
     {
         return bookingService.getBookingDetails();
@@ -29,7 +27,7 @@ public class BookingController {
     @GetMapping("/booking/{bookingId}")
     Booking getBookingDetailsById(@PathVariable long bookingId)
     {
-        return bookingService.getBookingDetailsByID(bookingId);
+        return bookingService.getBookingDetailsByID( bookingId);
     }
 
     @GetMapping("/previousBooking/{userId}")

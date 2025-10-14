@@ -30,4 +30,16 @@ public class TrackingController {
 
         return booking;
     }
+    @GetMapping("/{userId}/{bookingId}")
+    public Booking getTrackingStatusByUserIdAndBookindId(@PathVariable long userId,@PathVariable long bookingId)
+    {
+        Booking booking=bookingService.getBookingDetailsByUserIDAndBookingId(userId,bookingId);
+
+        if(booking==null) {
+            return null;
+        }
+
+        return booking;
+    }
+
 }

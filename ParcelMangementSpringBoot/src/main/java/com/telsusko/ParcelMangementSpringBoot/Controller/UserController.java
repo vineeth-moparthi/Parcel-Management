@@ -28,7 +28,17 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/user")
+    @PostMapping("/admin")
+    User registerAdmin(@RequestBody User admin){
+
+        if(userService.registerAdmin(admin))
+        {
+            return admin;
+        }
+        return null;
+    }
+
+    @GetMapping("/users")
     List<User> getUserDetails()
     {
         return userService.getUserDetails();
@@ -59,6 +69,11 @@ public class UserController {
 
         userService.registerUser(user);
         return "User registered successfully";
+    }
+
+    @DeleteMapping("/user/{userId}")
+    void deleteUser(@PathVariable long userId){
+        userService.deleteById(userId);
     }
 
 }

@@ -2,21 +2,20 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function Registration() {
+export default function AdminRegistration({ onNewAdmin }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     countryCode: "+91",
     mobile: "",
     address: "",
+    pincode: "",
     password: "",
     confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
-
   const countryCodes = ["+91", "+1", "+44", "+61", "+81"];
 
   const handleChange = (e) => {
@@ -33,6 +32,8 @@ export default function Registration() {
     if (!/^\d{10}$/.test(formData.mobile))
       newErrors.mobile = "Mobile number must be 10 digits";
     if (!formData.address) newErrors.address = "Address is required";
+    if (!/^\d{6}$/.test(formData.pincode))
+      newErrors.pincode = "Pincode must be 6 digits";
     if (!formData.password || formData.password.length > 30)
       newErrors.password = "Password is required (max 30 characters)";
     if (formData.password !== formData.confirmPassword)
@@ -47,30 +48,42 @@ export default function Registration() {
     if (!validate()) return;
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/registration",
-        formData
-      );
-      setMessage(response.data);
+      const payload = { ...formData };
+      const res = await axios.post("http://localhost:8080/api/admin", payload);
 
-      if (response.data === "User registered successfully") {
-        alert("Registration successful! Please login.");
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error("Registration failed:", error);
-      setMessage("Something went wrong. Please try again.");
+      alert("Admin registered successfully!");
+
+      // Call callback to refresh ManageUsers table
+      if (onNewAdmin) onNewAdmin();
+
+      // Clear form
+      setFormData({
+        name: "",
+        email: "",
+        countryCode: "+91",
+        mobile: "",
+        address: "",
+        pincode: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      // Navigate back to manage-users
+      navigate("/manage-users");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to register admin.");
     }
   };
 
   return (
     <div className="container mt-5">
       <form onSubmit={handleSubmit} className="border p-4 rounded shadow">
-        <h2 className="mb-4">Customer Registration</h2>
+        <h2 className="mb-4">Admin Registration</h2>
 
         {/* Name */}
         <div className="mb-3">
-          <label className="form-label">Customer Name</label>
+          <label className="form-label">Name</label>
           <input
             type="text"
             name="name"
@@ -119,7 +132,6 @@ export default function Registration() {
               value={formData.mobile}
               onChange={handleChange}
               className="form-control"
-              placeholder="10-digit number"
             />
           </div>
           {errors.mobile && <div className="text-danger">{errors.mobile}</div>}
@@ -136,6 +148,22 @@ export default function Registration() {
           ></textarea>
           {errors.address && (
             <div className="text-danger">{errors.address}</div>
+          )}
+        </div>
+
+        {/* Pincode */}
+        <div className="mb-3">
+          <label className="form-label">Pincode</label>
+          <input
+            type="text"
+            name="pincode"
+            maxLength={6}
+            value={formData.pincode}
+            onChange={handleChange}
+            className="form-control"
+          />
+          {errors.pincode && (
+            <div className="text-danger">{errors.pincode}</div>
           )}
         </div>
 
@@ -171,13 +199,10 @@ export default function Registration() {
           )}
         </div>
 
-        {/* Submit */}
         <button type="submit" className="btn btn-primary">
-          Register
+          Register Admin
         </button>
       </form>
-
-      {message && <p className="mt-3">{message}</p>}
     </div>
   );
 }

@@ -6,7 +6,6 @@ const BookingForm = () => {
   const navigate = useNavigate();
 
   const [booking, setBooking] = useState({
-    parcelId: "",
     userId: "",
     senderEmail: "",
     senderName: "",
@@ -91,11 +90,18 @@ const BookingForm = () => {
         "http://localhost:8080/booking",
         booking
       );
-      alert("Booking created successfully!");
+
+      // ✅ This will now print the long value
       console.log(response.data);
-      setBooking({});
+
+      // ✅ Use response.data directly for navigation
+      if (response.data) {
+        // setBooking({}); // Optional: clear the form
+        navigate(`/generateInvoice/${response.data}`);
+      }
+      
     } catch (error) {
-      console.error(error);
+      console.error("Error creating booking:", error.response || error);
       alert("Failed to create booking.");
     }
   };

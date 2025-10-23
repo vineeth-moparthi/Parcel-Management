@@ -10,6 +10,7 @@ import Tracking from "../pages/Tracking";
 import PickupDropUpdate from "../pages/PickupDropUpdate";
 import ManageUsers from "../pages/ManageUsers";
 import AllBookings from "../pages/AllBookings";
+import InvoicePage from "../pages/Inovoice";
 
 // import Dashboard from '../pages/Dashboard';
 
@@ -17,7 +18,7 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user-registration" element={<UserRegistration />} />
         <Route path="/admin-registration" element={<AdminRegistration />} />
@@ -31,6 +32,7 @@ export default function AppRoutes() {
         <Route path="/pickup-drop-update" element={<PickupDropUpdate />} />
         <Route path="/manage-users" element={<ManageUsers />} />
         <Route path="/all-bookings" element={<AllBookings />} />
+        <Route path="/generateInvoice/:bookingId" element={<InvoicePage />} />
       </Routes>
     </BrowserRouter>
   );

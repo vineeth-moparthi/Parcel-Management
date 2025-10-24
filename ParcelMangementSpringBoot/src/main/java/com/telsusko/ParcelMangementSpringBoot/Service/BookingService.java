@@ -15,7 +15,7 @@ public class BookingService{
     @Autowired
     BookingRepo bookingRepo;
 
-    public void addBookingDetails(Booking booking) {
+    public long addBookingDetails(Booking booking) {
 
         LocalDateTime pickupTime = booking.getPickupTime().toLocalDateTime(); // Assuming this is LocalDateTime
 
@@ -37,6 +37,7 @@ public class BookingService{
         booking.setServiceCost(cost);
         booking.setBookingDate(Timestamp.valueOf(LocalDateTime.now()));
         bookingRepo.save(booking);
+        return booking.getBookingId();
     }
 
 //    public Booking getBookingDetailsByUserIDAndBookingID(long userId, long bookingId) {

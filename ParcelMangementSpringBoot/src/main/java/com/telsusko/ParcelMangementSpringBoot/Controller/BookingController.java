@@ -14,9 +14,10 @@ public class BookingController {
     BookingService bookingService;
 
     @PostMapping("/booking")
-    public void addBoookingDetails(@RequestBody Booking booking)
+    public long addBoookingDetails(@RequestBody Booking booking)
     {
-        bookingService.addBookingDetails(booking);
+        long bookingId= bookingService.addBookingDetails(booking);
+        return bookingId;
     }
     @GetMapping("/allbookings")
     List<Booking> getBookingDetails()
